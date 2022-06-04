@@ -3,10 +3,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/devstudy?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: slrlal1!
+    password:
 
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
     show-sql: true
+    hibernate:
+      ddl-auto: create
