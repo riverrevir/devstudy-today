@@ -1,4 +1,4 @@
-package today.devstudy.user;
+package today.devstudy.dto.user;
 
 
 import javax.validation.constraints.Email;
