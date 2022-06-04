@@ -4,13 +4,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
+import today.devstudy.email.Email;
+import today.devstudy.email.EmailConfirmationTokenService;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     public User create(String username, String email, String password,String sex){
 
             User user = new User();
@@ -21,4 +22,6 @@ public class UserService {
             this.userRepository.save(user);
             return user;
     }
+
+
 }

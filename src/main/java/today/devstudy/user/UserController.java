@@ -6,10 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +28,12 @@ public class UserController {
         gender.add("여");
     }
 
-    // 회원가입
+    /**
+     *
+     * @param model
+     * @param userCreateForm
+     * @return
+     */
     @GetMapping("/register")
     public String register(Model model, UserCreateForm userCreateForm){
         model.addAttribute("sex",gender);
@@ -61,6 +63,5 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 이메일 인증
 
 }
