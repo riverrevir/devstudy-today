@@ -15,8 +15,8 @@ public class StudyTask {
 
     @Id
     @GeneratedValue
-    @Column(name = "studytask_id")
-    private Long id;
+    @Column(name = "studytask_number")
+    private Long number;
 
     @Column(name = "studytask_subject")
     @Enumerated(EnumType.STRING)

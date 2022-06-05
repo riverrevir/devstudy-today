@@ -5,10 +5,10 @@ import today.devstudy.domain.StudyTask;
 
 @Getter
 public class StartStudyTaskResponse {
-    private Long studyTaskId;
+    private Long studyTaskNumber;
     public static StartStudyTaskResponse from(StudyTask studyTask){
         StartStudyTaskResponse response = new StartStudyTaskResponse();
-        response.studyTaskId = studyTask.getId();
+        response.studyTaskNumber = studyTask.getNumber();
         return response;
     }
 

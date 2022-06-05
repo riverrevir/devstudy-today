@@ -3,6 +3,8 @@ package today.devstudy.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import today.devstudy.domain.User;
 
-public interface UserRepository extends JpaRepository<User,Long>{
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User,Long>{
+    Optional<User> findByUserId(String userId);
 }

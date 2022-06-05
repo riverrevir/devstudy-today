@@ -12,9 +12,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User create(String username, String email, String password, String sex) {
+    public User create(String userId, String email, String password, String sex) {
         User user = new User();
-        user.setUsername(username);
+        user.setUserId(userId);
         user.setEmail(email);
         user.setSex(sex);
         user.setPassword(passwordEncoder.encode(password));

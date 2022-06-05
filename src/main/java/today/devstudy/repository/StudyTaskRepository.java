@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 import today.devstudy.domain.StudyTask;
 
 public interface StudyTaskRepository  extends JpaRepository<StudyTask,Long> {
+    
 }
