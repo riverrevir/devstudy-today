@@ -2,6 +2,13 @@ package today.devstudy.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User,Long>{
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User,Long>{
+    /**
+     * 회원아이디찾기
+     * @param userName
+     * @return
+     */
+    Optional<User> findByusername(String username);
 }
