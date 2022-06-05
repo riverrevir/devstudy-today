@@ -1,11 +1,10 @@
 package today.devstudy.user;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import today.devstudy.email.Email;
-import today.devstudy.email.EmailConfirmationTokenService;
 
 @RequiredArgsConstructor
 @Service
@@ -23,5 +22,18 @@ public class UserService {
             return user;
     }
 
+    public User login(String username,String password) throws Exception {
+        User user = userRepository.findByusername(username);
+        if(user==null) {
+            System.out.println("1번오류");
+            throw new Exception("사용자를 찾을 수 없습니다.");
+        }
+        System.out.println(password);
+        if(!passwordEncoder.matches(password,user.getPassword())){
+            System.out.println("2번오류");
+            throw new Exception("비밀번호가 틀립니다.");
+        }
+        return user;
+    }
 
 }

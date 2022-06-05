@@ -29,7 +29,7 @@ public class UserController {
     }
 
     /**
-     *
+     * register(회원가입)
      * @param model
      * @param userCreateForm
      * @return
@@ -63,5 +63,22 @@ public class UserController {
         return "redirect:/";
     }
 
+
+    @GetMapping("/login")
+    public String login(){
+
+        return "login_form";
+    }
+
+    @PostMapping("/login")
+    public String login(String username,String password){
+        try{
+            userService.login(username,password);
+        } catch(Exception e){
+            System.out.println("3번오류");
+            return "login_form";
+        }
+        return "redirect:/";
+    }
 
 }
