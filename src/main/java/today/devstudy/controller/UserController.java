@@ -1,14 +1,18 @@
-package today.devstudy.user;
+package today.devstudy.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
+import today.devstudy.service.UserService;
+import today.devstudy.dto.user.UserCreateForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +47,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "register_form";
-        }
-        if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
-            bindingResult.rejectValue("password2", "passwordInCorrect", "패스워드가 일치하지 않습니다.");
-            return "register_form";
-        }
         try {
             userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getSex());
         } catch (DataIntegrityViolationException e) {
@@ -78,7 +75,8 @@ public class UserController {
         } catch (Exception e) {
             return "login_form";
         }
+        userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getSex());
         return "redirect:/";
     }
-
 }
+
