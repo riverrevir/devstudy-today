@@ -76,7 +76,6 @@ public class UserController {
         try {
             userService.login(username, password);
         } catch (Exception e) {
-            System.out.println("3번오류");
             return "login_form";
         }
         return "redirect:/";
