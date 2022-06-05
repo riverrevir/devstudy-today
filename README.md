@@ -13,7 +13,7 @@
 ##### 기술 스택
 > JAVA(11) / SPRING
 >
-> HTML,CSS,JAVASCRIPT
+> HTML / CSS / JAVASCRIPT
 >
 > MYSQL
 
