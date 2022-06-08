@@ -12,3 +12,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+  main:
+    allow-circular-references: true
+  jwt:
+    #비밀키 노출 조심해야합니다.
+    secret:

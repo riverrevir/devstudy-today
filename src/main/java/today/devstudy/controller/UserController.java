@@ -2,15 +2,16 @@ package today.devstudy.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import today.devstudy.config.ApiResponse;
 import today.devstudy.service.UserService;
 import today.devstudy.dto.user.UserCreateForm;
 
@@ -46,19 +47,20 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    @ResponseBody
+    public ResponseEntity<ApiResponse> register(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         try {
             userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getSex());
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("registerFailed", "이미 등록된 사용자입니다.");
-            return "register_form";
+            return new ResponseEntity<>(new ApiResponse(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("registerFailed", e.getMessage());
-            return "register_form";
+            return new ResponseEntity<>(new ApiResponse(), HttpStatus.NOT_FOUND);
         }
-        return "redirect:/";
+        return new ResponseEntity<>(new ApiResponse(), HttpStatus.OK);
     }
 
 
@@ -75,7 +77,6 @@ public class UserController {
         } catch (Exception e) {
             return "login_form";
         }
-        userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getSex());
         return "redirect:/";
     }
 }
