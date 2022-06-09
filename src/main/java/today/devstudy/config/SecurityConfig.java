@@ -57,16 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(
                         "/authenticate",
                         "/api/user/login",
-                        "/api/user/auth",
                         "/api/user/register")
                 .permitAll()
                 // 다른 모든 요청은 인증을 한다.
                 .anyRequest().authenticated().and()
                 // 상태없는 세션을 이용하며, 세션에 사용자의 상태를 저장하지 않는다.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .formLogin().disable()
-                .headers().frameOptions().disable();
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 모든 요청에 토큰을 검증하는 필터를 추가한다.
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
