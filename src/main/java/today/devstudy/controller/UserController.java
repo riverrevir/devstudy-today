@@ -2,6 +2,7 @@ package today.devstudy.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -66,17 +67,6 @@ public class UserController {
     public String login() {
 
         return "login_form";
-    }
-
-    @PostMapping("/login")
-    public String login(String username, String password) {
-        try {
-            userService.login(username, password);
-        } catch (Exception e) {
-            return "login_form";
-        }
-        userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getSex());
-        return "redirect:/";
     }
 }
 
