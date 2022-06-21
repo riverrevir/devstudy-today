@@ -2,17 +2,21 @@ package today.devstudy.dto.studyTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import today.devstudy.domain.StudyTask;
-import today.devstudy.domain.Subject;
+import today.devstudy.domain.studyTask.StudyTask;
+import today.devstudy.domain.type.Subject;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 public class StartStudyTaskRequest {
-    private Subject subject;
+    @NotEmpty
+    private List<Subject> subjects;
 
-    public static StudyTask newStudyTask(StartStudyTaskRequest startStudyTaskRequest){
-        StudyTask studyTask = new StudyTask();
-        studyTask.setSubject(startStudyTaskRequest.getSubject());
-        return studyTask;
+    public static List<StudyTask> newStudyTasks(StartStudyTaskRequest startStudyTaskRequest){
+        List<Subject> subjects = startStudyTaskRequest.getSubjects();
+        return subjects.stream().map(Subject::from).collect(Collectors.toList());
     }
 }
