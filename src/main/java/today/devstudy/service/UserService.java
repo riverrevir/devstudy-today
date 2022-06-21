@@ -34,11 +34,10 @@ public class UserService {
     public LoginResponse login(LoginRequest request) throws Exception {
         final String userId = request.getUserId();
         final String password = request.getPassword();
-        User user = this.userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        User user = this.userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호를 확인해주세요."));
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new InputNotFoundException();
+            throw new IllegalArgumentException("아이디 또는 비밀번호를 확인해주세요.");
         }
-
         String token = jwtTokenUtil.generateToken(userId);
         return new LoginResponse(token);
     }
