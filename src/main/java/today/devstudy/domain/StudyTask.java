@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Setter
 @Getter
 @Entity
@@ -28,7 +30,7 @@ public class StudyTask {
     @Column(name = "studytask_endtime")
     private LocalDateTime endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
