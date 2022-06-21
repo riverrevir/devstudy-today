@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 import today.devstudy.config.ApiResponse;
+import today.devstudy.dto.user.LoginRequest;
+import today.devstudy.dto.user.LoginResponse;
 import today.devstudy.service.UserService;
 import today.devstudy.dto.user.UserCreateForm;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -24,25 +23,9 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    List<String> gender;
-
-    @ModelAttribute
-    public void genderLoad() {
-        gender = new ArrayList<String>();
-        gender.add("남");
-        gender.add("여");
-    }
-
-    /**
-     * register(회원가입)
-     *
-     * @param model
-     * @param userCreateForm
-     * @return
-     */
     @GetMapping("/register")
     public String register(Model model, UserCreateForm userCreateForm) {
-        model.addAttribute("sex", gender);
+        model.addAttribute("sex");
         return "register_form";
     }
 
@@ -71,13 +54,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(String username, String password) {
-        try {
-            userService.login(username, password);
-        } catch (Exception e) {
-            return "login_form";
-        }
-        return "redirect:/";
+    @ResponseBody
+    public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
+        return userService.login(loginRequest);
     }
 }
-

@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import today.devstudy.domain.User;
+import today.devstudy.repository.UserRepository;
 import today.devstudy.service.JwtUserDetailService;
 
 import javax.servlet.FilterChain;
@@ -22,6 +25,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUserDetailService jwtUserDetailService;
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -46,15 +51,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 // 토큰을 가져오면 검증을 한다.
         if (userid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.jwtUserDetailService.loadUserByUsername(userid);
+            User user = this.userRepository.findByUserId(userid).orElseThrow(() -> new UsernameNotFoundException("사용자 이름찾지못함"));
 
             // 토큰이 유효한 경우 수동으로 인증을 설정하도록 스프링 시큐리티를 구성한다.
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+            if (jwtTokenUtil.validateToken(jwtToken)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                user,
                                 null,
-                                userDetails.getAuthorities()
+                                null
                         );
                 usernamePasswordAuthenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
