@@ -1,4 +1,5 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content" class="container my-3">
     <form th:action="@{/api/user/login}" method="post" >
         <div th:if="${param.error}">
@@ -6,9 +7,9 @@
                 사용자ID 또는 비밀번호를 확인해 주세요.
             </div>
         </div>
-        <div class="mb-3">
-            <label for="username" class="form-label">사용자ID</label>
-            <input type="text" name="username" id="username" class="form-control">
+        <div class="mb-3" th:>
+            <label for="userid" class="form-label">사용자ID</label>
+            <input type="text" name="username" id="userid" class="form-control">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">비밀번호</label>
