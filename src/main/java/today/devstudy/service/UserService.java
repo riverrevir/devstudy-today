@@ -8,6 +8,8 @@ import today.devstudy.config.jwt.JwtTokenUtil;
 import today.devstudy.domain.User;
 import today.devstudy.dto.user.LoginRequest;
 import today.devstudy.dto.user.LoginResponse;
+import today.devstudy.dto.user.UserCreateRequest;
+import today.devstudy.dto.user.UserCreateResponse;
 import today.devstudy.exception.InputNotFoundException;
 import today.devstudy.repository.UserRepository;
 
@@ -21,14 +23,19 @@ public class UserService {
 
     private final JwtTokenUtil jwtTokenUtil;
 
-    public User create(String userId, String email, String password, String sex) {
+    public UserCreateResponse create(UserCreateRequest request) {
+        final String userId = request.getUserId();
+        final String password = request.getPassword1();
+        final String sex = request.getSex();
+        final String email = request.getEmail();
         User user = new User();
         user.setUserId(userId);
+        user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setSex(sex);
-        user.setPassword(passwordEncoder.encode(password));
-        this.userRepository.save(user);
-        return user;
+        userRepository.save(user);
+        String token = jwtTokenUtil.generateToken(userId);
+        return new UserCreateResponse(token);
     }
 
     public LoginResponse login(LoginRequest request) throws Exception {
