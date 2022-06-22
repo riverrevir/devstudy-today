@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import today.devstudy.dto.exception.ExceptionResponse;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(IllegalArgumentException.class)
@@ -17,6 +19,11 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> validException(){
         return new ResponseEntity<>(new ExceptionResponse("요청의 유효성을 만족하지 않습니다."),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> duplicateUniqueColumException(){
+        return new ResponseEntity<>(new ExceptionResponse("중복 사용자가 존재합니다."),HttpStatus.BAD_REQUEST);
     }
 
 }
