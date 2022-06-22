@@ -37,8 +37,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             userid = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        } else {
-            throw (new IllegalArgumentException("유효하지 않은 토큰입니다."));
         }
 // 토큰을 가져오면 검증을 한다.
         if (userid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
