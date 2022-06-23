@@ -59,6 +59,13 @@ public class UserService {
         return new EmailResponse("success");
     }
 
+    public FindUserIdResponse emailCheckAndFindByUserId(FindUserIdRequest findUserIdRequest) {
+        String email = findUserIdRequest.getEmail();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일 입니다."));
+        String userId = user.getUserId();
+        return new FindUserIdResponse(userId);
+    }
+
     public LoginResponse login(LoginRequest request) throws Exception {
         final String userId = request.getUserId();
         final String password = request.getPassword();

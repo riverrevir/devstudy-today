@@ -1,6 +1,7 @@
 package today.devstudy.controller;
 
 import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,15 @@ public class UserController {
     }
 
     @PostMapping("/change/password")
-    public EmailResponse changePassword(@RequestBody EmailRequest emailRequest){
+    public EmailResponse changePassword(@RequestBody EmailRequest emailRequest) {
         return userService.createMailAndChangePassword(emailRequest);
     }
+
+    @GetMapping("/find/userid")
+    public FindUserIdResponse findByUserId(@RequestBody FindUserIdRequest findUserIdRequest) {
+        return userService.emailCheckAndFindByUserId(findUserIdRequest);
+    }
+
     @PostMapping("/login")
     @ResponseBody
     public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
