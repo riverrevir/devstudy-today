@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/devstudy?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3307/devstudy?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password:
 
@@ -11,9 +11,18 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   main:
     allow-circular-references: true
   jwt:
     #비밀키 노출 조심해야합니다.
     secret:
+
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: 네이버 아이디@naver.com
+    password: 비밀번호
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
