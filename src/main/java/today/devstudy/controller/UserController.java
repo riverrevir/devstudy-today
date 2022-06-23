@@ -28,6 +28,10 @@ public class UserController {
         return userService.checkEmailDuplication(email);
     }
 
+    @PostMapping("/change/password")
+    public EmailResponse changePassword(@RequestBody EmailRequest emailRequest){
+        return userService.createMailAndChangePassword(emailRequest);
+    }
     @PostMapping("/login")
     @ResponseBody
     public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {

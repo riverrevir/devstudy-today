@@ -58,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/authenticate",
                         "/api/user/login",
                         "/api/user/register",
-                        "/api/user/auth/**")
+                        "/api/user/auth/**",
+                        "/api/user/change/password")
                 .permitAll()
                 // 다른 모든 요청은 인증을 한다.
                 .anyRequest().authenticated().and()
