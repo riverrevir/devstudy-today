@@ -1,15 +1,14 @@
 package today.devstudy.service;
 
+import groovy.util.logging.Log;
+import groovy.util.logging.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import today.devstudy.config.jwt.JwtTokenUtil;
 import today.devstudy.domain.User;
-import today.devstudy.dto.user.LoginRequest;
-import today.devstudy.dto.user.LoginResponse;
-import today.devstudy.dto.user.UserCreateRequest;
-import today.devstudy.dto.user.UserCreateResponse;
+import today.devstudy.dto.user.*;
 import today.devstudy.exception.InputNotFoundException;
 import today.devstudy.repository.UserRepository;
 
@@ -36,6 +35,16 @@ public class UserService {
         userRepository.save(user);
         String token = jwtTokenUtil.generateToken(userId);
         return new UserCreateResponse(token);
+    }
+
+    public UserCreateAuthResponse checkUserIdDuplication(String userid) {
+        boolean userIdDuplication = userRepository.existsByUserId(userid);
+        return new UserCreateAuthResponse(userIdDuplication);
+    }
+
+    public UserCreateAuthResponse checkEmailDuplication(String email) {
+        boolean emailDuplication = userRepository.existsByEmail(email);
+        return new UserCreateAuthResponse(emailDuplication);
     }
 
     public LoginResponse login(LoginRequest request) throws Exception {
