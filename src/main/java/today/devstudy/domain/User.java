@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import today.devstudy.domain.studyTask.StudyTask;
 
 import java.util.ArrayList;
 import java.util.List;

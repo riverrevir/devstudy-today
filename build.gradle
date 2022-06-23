@@ -32,6 +32,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	//JWT
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+
+	//log
+	implementation 'org.springframework.boot:spring-boot-starter-logging:2.6.8'
+
+	//SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

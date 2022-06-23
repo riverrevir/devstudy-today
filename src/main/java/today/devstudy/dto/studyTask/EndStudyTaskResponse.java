@@ -9,21 +9,20 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-public class StartStudyTaskResponse {
+public class EndStudyTaskResponse {
     private Long studyTaskNumber;
-    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Subject subject;
 
-    public static StartStudyTaskResponse from(StudyTask studyTask){
+    public static EndStudyTaskResponse from(StudyTask studyTask){
         Long studyTaskNumber = studyTask.getNumber();
-        LocalDateTime startTime = studyTask.getStartTime();
+        LocalDateTime endTime = studyTask.getEndTime();
         Subject subject = studyTask.getSubject();
 
-        return StartStudyTaskResponse.builder()
+        return EndStudyTaskResponse.builder()
                 .studyTaskNumber(studyTaskNumber)
-                .startTime(startTime)
+                .endTime(endTime)
                 .subject(subject)
                 .build();
     }
-
 }
