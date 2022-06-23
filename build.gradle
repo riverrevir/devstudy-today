@@ -39,6 +39,9 @@ dependencies {
 	//log
 	implementation 'org.springframework.boot:spring-boot-starter-logging:2.6.8'
 
+	//SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {
