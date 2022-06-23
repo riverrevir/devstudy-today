@@ -29,7 +29,7 @@ public class UserController {
         return userService.checkEmailDuplication(email);
     }
 
-    @PostMapping("/change/password")
+    @PostMapping("/find/password")
     public EmailResponse changePassword(@RequestBody EmailRequest emailRequest) {
         return userService.createMailAndChangePassword(emailRequest);
     }
@@ -44,4 +44,5 @@ public class UserController {
     public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
         return userService.login(loginRequest);
     }
+
 }
