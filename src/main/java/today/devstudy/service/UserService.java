@@ -59,8 +59,8 @@ public class UserService {
         return new EmailResponse("success");
     }
 
-    public FindUserIdResponse emailCheckAndFindByUserId(FindUserIdRequest findUserIdRequest) {
-        String email = findUserIdRequest.getEmail();
+    public FindUserIdResponse emailCheckAndFindByUserId(FindUserIdRequest request) {
+        String email = request.getEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일 입니다."));
         String userId = user.getUserId();
         return new FindUserIdResponse(userId);
@@ -75,5 +75,19 @@ public class UserService {
         }
         String token = jwtTokenUtil.generateToken(userId);
         return new LoginResponse(token);
+    }
+
+    public ChangePasswordResponse findByUserIdAndPasswordChange(String token,ChangePasswordRequest request){
+        String currentPassword=request.getCurrentPassword();
+        String password=request.getPassword1();
+        String jwtToken=jwtTokenUtil.splitToken(token);
+        String userId= jwtTokenUtil.getUsernameFromToken(jwtToken);
+        User user=userRepository.findByUserId(userId).orElseThrow(()->new IllegalArgumentException("잘못된 요청입니다."));
+        if(!passwordEncoder.matches(currentPassword,user.getPassword())){
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        return new ChangePasswordResponse("success");
     }
 }
