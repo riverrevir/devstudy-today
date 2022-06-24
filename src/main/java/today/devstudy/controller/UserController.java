@@ -1,5 +1,6 @@
 package today.devstudy.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/find/password")
-    public EmailResponse changePassword(@RequestBody EmailRequest emailRequest) {
+    public EmailResponse findPassword(@RequestBody EmailRequest emailRequest) {
         return userService.createMailAndChangePassword(emailRequest);
     }
 
@@ -45,4 +46,9 @@ public class UserController {
         return userService.login(loginRequest);
     }
 
+    @PostMapping("/change/password")
+    public ChangePasswordResponse changePassword(@RequestHeader(value = "Authorization") String token, @RequestBody ChangePasswordRequest request) {
+        System.out.println(token);
+        return userService.findByUserIdAndPasswordChange(token, request);
+    }
 }
