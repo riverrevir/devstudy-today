@@ -78,10 +78,14 @@ public class UserService {
     }
 
     public ChangePasswordResponse findByUserIdAndPasswordChange(String token,ChangePasswordRequest request){
+        String currentPassword=request.getCurrentPassword();
         String password=request.getPassword1();
         String jwtToken=jwtTokenUtil.splitToken(token);
         String userId= jwtTokenUtil.getUsernameFromToken(jwtToken);
         User user=userRepository.findByUserId(userId).orElseThrow(()->new IllegalArgumentException("잘못된 요청입니다."));
+        if(!passwordEncoder.matches(currentPassword,user.getPassword())){
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         return new ChangePasswordResponse("success");

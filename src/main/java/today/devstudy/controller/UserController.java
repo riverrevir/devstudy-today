@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/change/password")
-    public ChangePasswordResponse changePassword(@RequestHeader(value = "Authorization") String token, @RequestBody ChangePasswordRequest request) {
+    public ChangePasswordResponse changePassword(@RequestHeader(value = "Authorization") String token, @Valid @RequestBody ChangePasswordRequest request) {
         System.out.println(token);
         return userService.findByUserIdAndPasswordChange(token, request);
     }
