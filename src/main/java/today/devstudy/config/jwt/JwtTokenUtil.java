@@ -78,4 +78,8 @@ public class JwtTokenUtil implements Serializable {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
+
+    public String splitToken(String token){
+        return token.substring(7);
+    }
 }
