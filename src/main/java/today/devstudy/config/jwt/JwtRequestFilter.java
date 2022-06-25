@@ -2,6 +2,7 @@ package today.devstudy.config.jwt;
 
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Slf4j
 @Component
@@ -33,12 +35,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String userid = null;
         String jwtToken = null;
+
         // JWT 토큰은 "Beare token"에 있다. Bearer단어를 제거하고 토큰만 받는다.
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             userid = jwtTokenUtil.getUsernameFromToken(jwtToken);
         }
-// 토큰을 가져오면 검증을 한다.
+
+        // 토큰을 가져오면 검증을 한다.
         if (userid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = this.userRepository.findByUserId(userid).orElseThrow(() -> new IllegalArgumentException("올바르지 않은 사용자입니다."));
 

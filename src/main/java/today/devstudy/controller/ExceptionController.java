@@ -1,5 +1,8 @@
 package today.devstudy.controller;
 
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,5 +28,4 @@ public class ExceptionController {
     public ResponseEntity<ExceptionResponse> duplicateUniqueColumException(){
         return new ResponseEntity<>(new ExceptionResponse("중복 사용자가 존재합니다."),HttpStatus.BAD_REQUEST);
     }
-
 }
