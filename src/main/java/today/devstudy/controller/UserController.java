@@ -2,6 +2,7 @@ package today.devstudy.controller;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import today.devstudy.dto.user.*;
 import today.devstudy.service.UserService;
 
+@Api(tags = {"1. User"})
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 @RestController
@@ -19,9 +21,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserCreateResponse> register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        HttpHeaders headers=new HttpHeaders();
-        headers.set("Authorization","Bearer "+userService.create(userCreateRequest).getToken());
-        return new ResponseEntity<>(headers,HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userService.create(userCreateRequest).getToken());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @GetMapping("/auth/id/{userId}/exists")
