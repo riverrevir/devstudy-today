@@ -1,5 +1,6 @@
 package today.devstudy.controller;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import today.devstudy.config.jwt.JwtRequestFilter;
@@ -9,7 +10,7 @@ import today.devstudy.service.StudyTaskService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@Api(tags={"2. StudyTask"})
 @RequiredArgsConstructor
 @RequestMapping("/api/study")
 @RestController
