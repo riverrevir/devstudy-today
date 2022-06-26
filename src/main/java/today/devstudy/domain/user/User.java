@@ -1,4 +1,4 @@
-package today.devstudy.domain;
+package today.devstudy.domain.user;
 
 import javax.persistence.*;
 

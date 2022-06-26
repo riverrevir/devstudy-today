@@ -1,7 +1,9 @@
 package today.devstudy.dto.studyTask;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import today.devstudy.domain.studyTask.StudyTask;
 import today.devstudy.domain.type.Subject;
 
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class StartStudyTaskRequest {
     @NotEmpty

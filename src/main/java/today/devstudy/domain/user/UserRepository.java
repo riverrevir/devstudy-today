@@ -1,8 +1,8 @@
-package today.devstudy.repository;
+package today.devstudy.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import today.devstudy.domain.User;
+import today.devstudy.domain.user.User;
 
 import java.util.Optional;
 

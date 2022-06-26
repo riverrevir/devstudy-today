@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface StudyTaskRepository  extends JpaRepository<StudyTask,Long> {
 
-    List<StudyTask> findAllByStartTimeBetweenAndUserUserIdEquals(LocalDateTime from, LocalDateTime to, String userId);
+    List<StudyTask> findAllByStartTimeBetweenAndEndTimeNotNullAndUserUserIdEquals(LocalDateTime from, LocalDateTime to, String userId);
+
+    long countByStartTimeBetweenAndEndTimeNotNullAndUserUserIdEquals(LocalDateTime from, LocalDateTime to, String userId);
+
+    long countByStartTimeBetweenAndEndTimeIsNullAndUserUserIdEquals(LocalDateTime from, LocalDateTime to, String userId);
 
     List<StudyTask> findAllByStartTimeLessThan(LocalDateTime criterionTime);
 }

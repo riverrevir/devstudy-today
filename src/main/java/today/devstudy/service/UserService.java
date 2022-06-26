@@ -1,19 +1,13 @@
 package today.devstudy.service;
 
-import groovy.util.logging.Log;
-import groovy.util.logging.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import today.devstudy.config.email.EmailUtil;
 import today.devstudy.config.jwt.JwtTokenUtil;
-import today.devstudy.domain.User;
+import today.devstudy.domain.user.User;
 import today.devstudy.dto.user.*;
-import today.devstudy.exception.InputNotFoundException;
-import today.devstudy.repository.UserRepository;
-
-import java.util.Optional;
+import today.devstudy.domain.user.UserRepository;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +16,11 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailUtil emailUtil;
     private final JwtTokenUtil jwtTokenUtil;
+
+    public FindUserInfoResponse findUserInfo(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        return FindUserInfoResponse.from(user);
+    }
 
     public UserCreateResponse create(UserCreateRequest request) {
         final String userId = request.getUserId();
@@ -81,13 +80,13 @@ public class UserService {
         return new LoginResponse(token);
     }
 
-    public ChangePasswordResponse findByUserIdAndPasswordChange(String token,ChangePasswordRequest request){
-        String currentPassword=request.getCurrentPassword();
-        String password=request.getPassword1();
-        String jwtToken=jwtTokenUtil.splitToken(token);
-        String userId= jwtTokenUtil.getUsernameFromToken(jwtToken);
-        User user=userRepository.findByUserId(userId).orElseThrow(()->new IllegalArgumentException("잘못된 요청입니다."));
-        if(!passwordEncoder.matches(currentPassword,user.getPassword())){
+    public ChangePasswordResponse findByUserIdAndPasswordChange(String token, ChangePasswordRequest request) {
+        String currentPassword = request.getCurrentPassword();
+        String password = request.getPassword1();
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("잘못된 요청입니다."));
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
         user.setPassword(passwordEncoder.encode(password));

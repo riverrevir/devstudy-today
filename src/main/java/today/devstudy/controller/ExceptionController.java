@@ -6,6 +6,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import today.devstudy.dto.exception.ExceptionResponse;
@@ -28,4 +29,10 @@ public class ExceptionController {
     public ResponseEntity<ExceptionResponse> duplicateUniqueColumException(){
         return new ResponseEntity<>(new ExceptionResponse("중복 사용자가 존재합니다."),HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ExceptionResponse> badRequestException(){
+        return new ResponseEntity<>(new ExceptionResponse("잘못된 요청입니다."),HttpStatus.BAD_REQUEST);
+    }
+
 }
