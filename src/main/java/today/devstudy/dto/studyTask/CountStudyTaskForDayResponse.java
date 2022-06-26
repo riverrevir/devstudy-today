@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CountStudyTaskForDay {
-    private int count;
+public class CountStudyTaskForDayResponse {
+    private long count;
 }
