@@ -1,8 +1,10 @@
 package today.devstudy.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -41,9 +43,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
-    public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
-        return userService.login(loginRequest);
+    public ResponseEntity<LoginResponse> loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
+        HttpHeaders headers=new HttpHeaders();
+        headers.set("Authorization", "Bearer "+userService.login(loginRequest).getToken());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @PostMapping("/change/password")
