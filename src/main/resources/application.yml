@@ -26,3 +26,7 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
+
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher

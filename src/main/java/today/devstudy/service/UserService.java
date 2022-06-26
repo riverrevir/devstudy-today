@@ -24,12 +24,16 @@ public class UserService {
 
     public UserCreateResponse create(UserCreateRequest request) {
         final String userId = request.getUserId();
-        final String password = request.getPassword1();
+        final String password1 = request.getPassword1();
+        final String password2= request.getPassword2();
+        if(!password1.equals(password2)){
+            throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
+        }
         final String sex = request.getSex();
         final String email = request.getEmail();
         User user = new User();
         user.setUserId(userId);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(password1));
         user.setEmail(email);
         user.setSex(sex);
         userRepository.save(user);

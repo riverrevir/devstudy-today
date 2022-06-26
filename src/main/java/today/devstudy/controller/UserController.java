@@ -2,6 +2,7 @@ package today.devstudy.controller;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import today.devstudy.config.jwt.JwtTokenUtil;
 import today.devstudy.dto.user.*;
 import today.devstudy.service.UserService;
 
+@Api(tags = {"1. User"})
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 @RestController
@@ -21,8 +23,10 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/register")
-    public UserCreateResponse register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        return userService.create(userCreateRequest);
+    public ResponseEntity<UserCreateResponse> register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userService.create(userCreateRequest).getToken());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @GetMapping("/auth/id/{userId}/exists")
@@ -54,7 +58,6 @@ public class UserController {
 
     @PostMapping("/change/password")
     public ChangePasswordResponse changePassword(@RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token, @Valid @RequestBody ChangePasswordRequest request) {
-        System.out.println(token);
         return userService.findByUserIdAndPasswordChange(token, request);
     }
 
@@ -63,5 +66,12 @@ public class UserController {
         String jwtToken = jwtTokenUtil.splitToken(token);
         String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return userService.findUserInfo(userId);
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logoutResponse(@RequestHeader(value = "Authorization") String token) {
+        token = "";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }
