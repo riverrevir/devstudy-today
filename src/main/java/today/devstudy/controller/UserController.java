@@ -18,8 +18,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public UserCreateResponse register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        return userService.create(userCreateRequest);
+    public ResponseEntity<UserCreateResponse> register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+        HttpHeaders headers=new HttpHeaders();
+        headers.set("Authorization","Bearer "+userService.create(userCreateRequest).getToken());
+        return new ResponseEntity<>(headers,HttpStatus.OK);
     }
 
     @GetMapping("/auth/id/{userId}/exists")
