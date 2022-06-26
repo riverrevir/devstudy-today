@@ -28,9 +28,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    public static final String HEADER_KEY = "Authorization";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(HEADER_KEY);
         String userid = null;
         String jwtToken = null;
         // JWT 토큰은 "Beare token"에 있다. Bearer단어를 제거하고 토큰만 받는다.

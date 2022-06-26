@@ -1,7 +1,7 @@
 package today.devstudy.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.digester.ArrayStack;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.devstudy.domain.studyTask.StudyTask;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class StudyTaskService {
     private final StudyTaskRepository studyTaskRepository;
     private final UserRepository userRepository;
+    private static final Long criterionHour = 12L;
 
     public List<StartStudyTaskResponse> startStudyTask(StartStudyTaskRequest startStudyTaskRequest, String userId) {
         List<StudyTask> studyTasks = StartStudyTaskRequest.newStudyTasks(startStudyTaskRequest);
@@ -48,28 +49,50 @@ public class StudyTaskService {
 
         return endStudyTaskResponses;
     }
-
     @Transactional(readOnly = true)
-    public FindStudyTaskResponse findStudyTask(Long studyTaskNumber) {
-        StudyTask studyTask = studyTaskRepository.findById(studyTaskNumber).orElseThrow(() -> new IllegalArgumentException("잘못된 요청입니다."));
-        return FindStudyTaskResponse.from(studyTask);
+    public List<FindStudyTaskResponse> findStudyForDay(int year, int month, int day, String userId) {
+        LocalDateTime from = LocalDateTime.of(year, month, day, 0, 0, 0);
+        LocalDateTime to = from.plusDays(1L).minusSeconds(1L);
 
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+
+        return studyTasks.stream()
+                .map(FindStudyTaskResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<FindStudyTaskResponse> findStudyTaskByUserId(Long studyTaskNumber) {
-        List<StudyTask> studyTasks = studyTaskRepository.findAllById(studyTaskNumber);
-        List<FindStudyTaskResponse> findStudyTaskResponses = new ArrayList<>();
+    public List<FindStudyTaskResponse> findStudyForMonth(int year, int month, String userId) {
+        LocalDateTime from = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime to = from.plusMonths(1L).minusSeconds(1L);
 
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+
+        return studyTasks.stream()
+                .map(FindStudyTaskResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<FindStudyTaskResponse> findStudyForYear(int year, String userId) {
+        LocalDateTime from = LocalDateTime.of(year, 1, 1, 0, 0, 0);
+        LocalDateTime to = from.plusYears(1L).minusSeconds(1L);
+
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+
+        return studyTasks.stream()
+                .map(FindStudyTaskResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void killStudyTask() {
+        LocalDateTime criterionTime = LocalDateTime.now().minusHours(criterionHour);
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeLessThan(criterionTime);
         studyTasks.forEach(studyTask -> {
-            FindStudyTaskResponse findStudyTaskResponse = FindStudyTaskResponse.from(studyTask);
-            findStudyTaskResponses.add(findStudyTaskResponse);
+            studyTaskRepository.delete(studyTask);
         });
-
-        return findStudyTaskResponses;
-
     }
-
 
 }
 
