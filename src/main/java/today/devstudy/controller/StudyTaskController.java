@@ -18,35 +18,44 @@ public class StudyTaskController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/start")
-    public List<StartStudyTaskResponse> startStudyTask(@RequestBody StartStudyTaskRequest startStudyTaskRequest, @CookieValue(value = "bearer") String token) {
-        String userId = jwtTokenUtil.getUsernameFromToken(token);
+    public List<StartStudyTaskResponse> startStudyTask(@RequestBody StartStudyTaskRequest startStudyTaskRequest, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return studyTaskService.startStudyTask(startStudyTaskRequest, userId);
     }
 
     @PostMapping("/end")
-    public List<EndStudyTaskResponse> endStudyTask(@RequestBody EndStudyTaskRequest endStudyTaskRequest, HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader(JwtRequestFilter.HEADER_KEY);
-        String userId = jwtTokenUtil.getUsernameFromToken(token);
+    public List<EndStudyTaskResponse> endStudyTask(@RequestBody EndStudyTaskRequest endStudyTaskRequest, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return studyTaskService.endStudyTask(endStudyTaskRequest, userId);
     }
-    @GetMapping("/day")
-    public List<FindStudyTaskResponse> findDayStudyTask(@RequestParam int year, @RequestParam int month, @RequestParam int day, HttpServletRequest httpServletRequest){
-        String token = httpServletRequest.getHeader(JwtRequestFilter.HEADER_KEY);
-        String userId = jwtTokenUtil.getUsernameFromToken(token);
-        return studyTaskService.findStudyForDay(year,month,day,userId);
+
+    @GetMapping("/day/ongoing")
+    public CountStudyTaskForDayResponse countOnGoingDayStudyTask(@RequestParam int year, @RequestParam int month, @RequestParam int day, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        return studyTaskService.countOnGoingStudyForDay(year, month, day, userId);
+    }
+
+    @GetMapping("/day/completed")
+    public CountStudyTaskForDayResponse countCompletedDayStudyTask(@RequestParam int year, @RequestParam int month, @RequestParam int day, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        return studyTaskService.countCompletedStudyForDay(year, month, day, userId);
     }
 
     @GetMapping("/month")
-    public List<FindStudyTaskResponse> findMonthStudyTask(@RequestParam int year,@RequestParam int month, HttpServletRequest httpServletRequest){
-        String token = httpServletRequest.getHeader(JwtRequestFilter.HEADER_KEY);
-        String userId = jwtTokenUtil.getUsernameFromToken(token);
+    public List<FindStudyTaskResponse> findMonthStudyTask(@RequestParam int year, @RequestParam int month, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return studyTaskService.findStudyForMonth(year, month, userId);
     }
 
     @GetMapping("/year")
-    public List<FindStudyTaskResponse> findSixMonthStudyTask(@RequestParam int year, HttpServletRequest httpServletRequest){
-        String token = httpServletRequest.getHeader(JwtRequestFilter.HEADER_KEY);
-        String userId = jwtTokenUtil.getUsernameFromToken(token);
+    public List<FindStudyTaskResponse> findSixMonthStudyTask(@RequestParam int year, @RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return studyTaskService.findStudyForYear(year, userId);
     }
 }

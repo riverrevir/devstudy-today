@@ -1,7 +1,7 @@
 package today.devstudy.domain.studyTask;
 
 import lombok.Getter;
-import today.devstudy.domain.User;
+import today.devstudy.domain.user.User;
 import today.devstudy.domain.type.Subject;
 
 import javax.persistence.*;

@@ -5,10 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.devstudy.domain.studyTask.StudyTask;
-import today.devstudy.domain.User;
+import today.devstudy.domain.user.User;
 import today.devstudy.dto.studyTask.*;
 import today.devstudy.domain.studyTask.StudyTaskRepository;
-import today.devstudy.repository.UserRepository;
+import today.devstudy.domain.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,16 +49,25 @@ public class StudyTaskService {
 
         return endStudyTaskResponses;
     }
+
     @Transactional(readOnly = true)
-    public List<FindStudyTaskResponse> findStudyForDay(int year, int month, int day, String userId) {
+    public CountStudyTaskForDayResponse countOnGoingStudyForDay(int year, int month, int day, String userId) {
         LocalDateTime from = LocalDateTime.of(year, month, day, 0, 0, 0);
         LocalDateTime to = from.plusDays(1L).minusSeconds(1L);
 
-        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+        long count = studyTaskRepository.countByStartTimeBetweenAndEndTimeIsNullAndUserUserIdEquals(from, to, userId);
 
-        return studyTasks.stream()
-                .map(FindStudyTaskResponse::from)
-                .collect(Collectors.toList());
+        return new CountStudyTaskForDayResponse(count);
+    }
+
+    @Transactional(readOnly = true)
+    public CountStudyTaskForDayResponse countCompletedStudyForDay(int year, int month, int day, String userId) {
+        LocalDateTime from = LocalDateTime.of(year, month, day, 0, 0, 0);
+        LocalDateTime to = from.plusDays(1L).minusSeconds(1L);
+
+        long count = studyTaskRepository.countByStartTimeBetweenAndEndTimeNotNullAndUserUserIdEquals(from, to, userId);
+
+        return new CountStudyTaskForDayResponse(count);
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +75,7 @@ public class StudyTaskService {
         LocalDateTime from = LocalDateTime.of(year, month, 1, 0, 0, 0);
         LocalDateTime to = from.plusMonths(1L).minusSeconds(1L);
 
-        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndEndTimeNotNullAndUserUserIdEquals(from, to, userId);
 
         return studyTasks.stream()
                 .map(FindStudyTaskResponse::from)
@@ -78,7 +87,7 @@ public class StudyTaskService {
         LocalDateTime from = LocalDateTime.of(year, 1, 1, 0, 0, 0);
         LocalDateTime to = from.plusYears(1L).minusSeconds(1L);
 
-        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndUserUserIdEquals(from, to, userId);
+        List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeBetweenAndEndTimeNotNullAndUserUserIdEquals(from, to, userId);
 
         return studyTasks.stream()
                 .map(FindStudyTaskResponse::from)
@@ -87,6 +96,7 @@ public class StudyTaskService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void killStudyTask() {
+        System.out.println(1);
         LocalDateTime criterionTime = LocalDateTime.now().minusHours(criterionHour);
         List<StudyTask> studyTasks = studyTaskRepository.findAllByStartTimeLessThan(criterionTime);
         studyTasks.forEach(studyTask -> {
