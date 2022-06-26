@@ -44,14 +44,21 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
-        HttpHeaders headers=new HttpHeaders();
-        headers.set("Authorization", "Bearer "+userService.login(loginRequest).getToken());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userService.login(loginRequest).getToken());
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @PostMapping("/change/password")
     public ChangePasswordResponse changePassword(@RequestHeader(value = "Authorization") String token, @Valid @RequestBody ChangePasswordRequest request) {
-        System.out.println(token);
         return userService.findByUserIdAndPasswordChange(token, request);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logoutResponse(@RequestHeader(value = "Authorization") String token) {
+        token = "";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }
