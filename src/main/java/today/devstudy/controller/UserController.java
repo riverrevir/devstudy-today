@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import today.devstudy.config.jwt.JwtRequestFilter;
+import today.devstudy.config.jwt.JwtTokenUtil;
 import today.devstudy.dto.user.*;
 import today.devstudy.service.UserService;
 
@@ -16,6 +18,7 @@ import today.devstudy.service.UserService;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/register")
     public UserCreateResponse register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
@@ -44,14 +47,21 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
-        HttpHeaders headers=new HttpHeaders();
-        headers.set("Authorization", "Bearer "+userService.login(loginRequest).getToken());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userService.login(loginRequest).getToken());
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @PostMapping("/change/password")
-    public ChangePasswordResponse changePassword(@RequestHeader(value = "Authorization") String token, @Valid @RequestBody ChangePasswordRequest request) {
+    public ChangePasswordResponse changePassword(@RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token, @Valid @RequestBody ChangePasswordRequest request) {
         System.out.println(token);
         return userService.findByUserIdAndPasswordChange(token, request);
+    }
+
+    @GetMapping("/userinfo")
+    public FindUserInfoResponse findUserInfo(@RequestHeader(value = JwtRequestFilter.HEADER_KEY) String token) {
+        String jwtToken = jwtTokenUtil.splitToken(token);
+        String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        return userService.findUserInfo(userId);
     }
 }
