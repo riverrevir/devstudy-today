@@ -6,7 +6,7 @@
 
 
 
-# ❓ Why? [🔝] 
+# ❓ Why?
 
 
 #### 시간의 계획없이 공부를 하는 학생 및 직장인들을 위해 보다 나은 체계적인 공부습관을 잡을 수 있도록 도와준다.
@@ -39,7 +39,7 @@
 - 우리는 이러한 경쟁을 유도하여 공부에 대한 집착을 유도할 수 있도록 사용자 간의 학습량을 확인할 수 있게 하고싶다.
 
 
-# ✨ Features [🔝] 
+# ✨ Features
 
 ### 1. 
 ### 2. 
@@ -48,11 +48,11 @@
 
 ### [상세 기능 설명 문서](https://fluff-editor-6d2.notion.site/158018b027f84d1f9c1ed93425dd11af)
 
-# 🎛️ API [🔝] 
+# 🎛️ API
 
 ### [Rest API 명세](https://fluff-editor-6d2.notion.site/Rest-API-5acfb740662d460fbaee4b6f80209ff1)
 
-# 🤹 Futures [🔝] 
+# 🤹 Futures
 
 - 코드 리팩토링
 - SQL 응답 시간 개선
@@ -61,6 +61,6 @@
 
 
 
-# 📄 License [🔝] 
+# 📄 License
 
 
