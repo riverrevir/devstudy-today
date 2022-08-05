@@ -66,7 +66,7 @@ public class UserController {
         String jwtToken = jwtTokenUtil.splitToken(token);
         String userId = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return userService.findUserInfo(userId);
-
+    }
     @GetMapping("/logout")
     public ResponseEntity<?> logoutResponse(@RequestHeader(value = "Authorization") String token) {
         token = "";
