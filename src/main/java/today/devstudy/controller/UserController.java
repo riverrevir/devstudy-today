@@ -23,10 +23,8 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<UserCreateResponse> register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + userService.create(userCreateRequest).getToken());
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+    public UserCreateResponse register(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+        return userService.create(userCreateRequest);
     }
 
     @GetMapping("/auth/id/{userId}/exists")
@@ -50,10 +48,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + userService.login(loginRequest).getToken());
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+    public LoginResponse loginResponse(@RequestBody LoginRequest loginRequest) throws Exception {
+        return userService.login(loginRequest);
     }
 
     @PostMapping("/change/password")
