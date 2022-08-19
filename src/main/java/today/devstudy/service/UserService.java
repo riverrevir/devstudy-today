@@ -16,7 +16,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailUtil emailUtil;
     private final JwtTokenUtil jwtTokenUtil;
-
+    private static final String baseProfile="base-profile";
     public FindUserInfoResponse findUserInfo(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
         return FindUserInfoResponse.from(user);
@@ -36,6 +36,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password1));
         user.setEmail(email);
         user.setSex(sex);
+        user.setProfile(baseProfile);
+        user.setType(".jpg");
         userRepository.save(user);
         String token = jwtTokenUtil.generateToken(userId);
         return new UserCreateResponse(token);
