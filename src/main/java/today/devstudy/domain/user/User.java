@@ -33,4 +33,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<StudyTask> studyTasks = new ArrayList<>();
+
+    @Column(name="user_profile")
+    private String profile;
+
+    @Column(name="user_profile_type")
+    private String type;
 }
