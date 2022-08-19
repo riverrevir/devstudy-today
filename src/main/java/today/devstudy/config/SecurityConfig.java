@@ -66,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/authenticate",
                         "/api/user/login",
                         "/api/user/register",
-                        "/api/user/auth/**",
                         "/api/user/find/password",
                         "/api/user/find/userid")
                 .permitAll()
