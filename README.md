@@ -42,7 +42,7 @@
 # ✨ Features
 
 
-### [상세 기능 설명 문서](https://fluff-editor-6d2.notion.site/158018b027f84d1f9c1ed93425dd11af)
+### [상세 기능 설명 문서](https://fluff-editor-6d2.notion.site/2b917b7643f44a2cb899d7804cacda48)
 
 # 🎛️ API
 
