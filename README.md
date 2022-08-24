@@ -41,11 +41,6 @@
 
 # ✨ Features
 
-### 1. 
-### 2. 
-### 3. 
-### 4. 
-### 5.
 
 ### [상세 기능 설명 문서](https://fluff-editor-6d2.notion.site/158018b027f84d1f9c1ed93425dd11af)
 
